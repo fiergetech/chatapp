@@ -1,0 +1,91 @@
+{
+  "project_info": {
+    "project_number": "398204898330",
+    "firebase_url": "https://alatkp-5d53d.firebaseio.com",
+    "project_id": "alatkp-5d53d",
+    "storage_bucket": "alatkp-5d53d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:398204898330:android:b000e7e991b001152315a3",
+        "android_client_info": {
+          "package_name": "com.example.alatkp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "398204898330-0ivddbnfrnm75q3sofmbrbps1lfm2cku.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.alatkp",
+            "certificate_hash": "72840699839ba541b9c660f0ed0da95f031af3ef"
+          }
+        },
+        {
+          "client_id": "398204898330-mjqqjnj5d17jb8nvo28q103jtu9pi4e9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwanFTtHGv2DCA9mxzQ4UQQyD8QhehUpA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "398204898330-mjqqjnj5d17jb8nvo28q103jtu9pi4e9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "398204898330-d1qlc0obq89ml2feafc09gp74ulphok0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "io.smarthome.example"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:398204898330:android:bb58a8a80af01c922315a3",
+        "android_client_info": {
+          "package_name": "com.fiergetech.chatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "398204898330-mjqqjnj5d17jb8nvo28q103jtu9pi4e9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwanFTtHGv2DCA9mxzQ4UQQyD8QhehUpA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "398204898330-mjqqjnj5d17jb8nvo28q103jtu9pi4e9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "398204898330-d1qlc0obq89ml2feafc09gp74ulphok0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "io.smarthome.example"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
