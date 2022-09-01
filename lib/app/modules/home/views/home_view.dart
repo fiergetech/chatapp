@@ -35,7 +35,9 @@ class HomeView extends GetView<HomeController> {
             child: ListView.builder(
               itemCount: 20,
               itemBuilder: (context, index) => ListTile(
-                leading: CircleAvatar(),
+                leading: CircleAvatar(
+                  radius: 30,
+                ),
                 title: Text(
                   "Person ${index + 1}",
                   style: TextStyle(
