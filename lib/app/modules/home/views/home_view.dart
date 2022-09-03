@@ -94,9 +94,9 @@ class HomeView extends GetView<HomeController> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => Get.toNamed(Routes.SEARCH),
         child: Icon(
-          Icons.message_rounded,
+          Icons.search,
           size: 30,
         ),
         backgroundColor: Colors.red[900],
