@@ -10,6 +10,7 @@ class SearchView extends GetView<SearchController> {
   final List<Widget> search = List.generate(
     20,
     (index) => ListTile(
+      onTap: () => Get.toNamed(Routes.CHAT_ROOM),
       leading: CircleAvatar(
         radius: 30,
         backgroundColor: Colors.black26,
@@ -46,7 +47,7 @@ class SearchView extends GetView<SearchController> {
       appBar: PreferredSize(
         child: AppBar(
           backgroundColor: Colors.red[900],
-          title: const Text('Search'),
+          title: const Text('Search Chat'),
           centerTitle: true,
           leading: IconButton(
             onPressed: () => Get.back(),

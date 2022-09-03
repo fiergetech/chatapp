@@ -43,16 +43,16 @@ class HomeView extends GetView<HomeController> {
       body: Column(
         children: [
           Material(
-            elevation: 5,
+            elevation: 3,
             child: Container(
               margin: EdgeInsets.only(top: context.mediaQueryPadding.top),
-              decoration: BoxDecoration(
+              /*decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                    color: Colors.black38,
+                    color: Colors.black12,
                   ),
                 ),
-              ),
+              ),*/
               padding: EdgeInsets.fromLTRB(20, 30, 20, 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
