@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           return GetMaterialApp(
             title: "Your text",
-            initialRoute: Routes.HOME,
+            initialRoute: Routes.PROFILE,
             getPages: AppPages.routes,
           );
           /*return FutureBuilder(
