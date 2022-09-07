@@ -1,4 +1,5 @@
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:chatapp/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -14,7 +15,7 @@ class ProfileView extends GetView<ProfileController> {
         elevation: 0,
         backgroundColor: Colors.white,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () => Get.back(),
           icon: Icon(
             Icons.arrow_back,
             color: Colors.black,
@@ -36,13 +37,13 @@ class ProfileView extends GetView<ProfileController> {
             child: Column(
               children: [
                 AvatarGlow(
-                  endRadius: 110,
+                  endRadius: 75,
                   glowColor: Colors.black,
                   duration: Duration(seconds: 2),
                   child: Container(
                     margin: EdgeInsets.all(15),
-                    width: 175,
-                    height: 175,
+                    width: 120,
+                    height: 120,
                     decoration: BoxDecoration(
                       color: Colors.black38,
                       borderRadius: BorderRadius.circular(100),
@@ -80,7 +81,7 @@ class ProfileView extends GetView<ProfileController> {
               child: Column(
                 children: [
                   ListTile(
-                    onTap: () {},
+                    onTap: () => Get.toNamed(Routes.UPDATE_STATUS),
                     leading: Icon(Icons.note_add_outlined),
                     title: Text(
                       "Update Status",
@@ -91,7 +92,7 @@ class ProfileView extends GetView<ProfileController> {
                     trailing: Icon(Icons.arrow_right),
                   ),
                   ListTile(
-                    onTap: () {},
+                    onTap: () => Get.toNamed(Routes.CHANGE_PROFILE),
                     leading: Icon(Icons.person),
                     title: Text(
                       "Change Profile",
