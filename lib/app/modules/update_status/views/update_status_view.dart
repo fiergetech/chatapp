@@ -11,7 +11,7 @@ class UpdateStatusView extends GetView<UpdateStatusController> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () => Get.back(),
           icon: Icon(Icons.arrow_back),
         ),
         backgroundColor: Colors.red[900],
