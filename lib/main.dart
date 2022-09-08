@@ -28,12 +28,7 @@ class MyApp extends StatelessWidget {
           return ErrorScreen();
         }
         if (snapshot.connectionState == ConnectionState.done) {
-          return GetMaterialApp(
-            title: "Your text",
-            initialRoute: Routes.HOME,
-            getPages: AppPages.routes,
-          );
-          /*return FutureBuilder(
+          return FutureBuilder(
             future: Future.delayed(Duration(seconds: 3)),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
@@ -51,7 +46,7 @@ class MyApp extends StatelessWidget {
               }
               return SplashScreen();
             },
-          );*/
+          );
         }
         return LoadingScreen();
       },

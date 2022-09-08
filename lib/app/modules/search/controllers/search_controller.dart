@@ -1,9 +1,22 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SearchController extends GetxController {
+  late TextEditingController searchC;
+  @override
+  void onInit() {
+    searchC = TextEditingController();
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
+    searchC.dispose();
+    super.onClose();
+  }
   //TODO: Implement SearchController
 
-  final count = 0.obs;
+  /*final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
@@ -19,5 +32,5 @@ class SearchController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+  void increment() => count.value++;*/
 }

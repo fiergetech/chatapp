@@ -1,4 +1,5 @@
 import 'package:avatar_glow/avatar_glow.dart';
+import '../../../controllers/auth_controller.dart';
 import 'package:chatapp/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +8,7 @@ import 'package:get/get.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileView extends GetView<ProfileController> {
-  const ProfileView({Key? key}) : super(key: key);
+  final autchC = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +24,7 @@ class ProfileView extends GetView<ProfileController> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => autchC.logout(),
             icon: Icon(
               Icons.logout,
               color: Colors.black,
