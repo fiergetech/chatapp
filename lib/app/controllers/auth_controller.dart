@@ -1,6 +1,7 @@
 import 'package:chatapp/app/routes/app_pages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthController extends GetxController {
@@ -11,7 +12,25 @@ class AuthController extends GetxController {
   GoogleSignInAccount? _currentUser;
   GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  void firstInitialized() {}
+  Future<void> firstInitialized() async {
+    final box = GetStorage();
+    if (box.read('skipIntro') != null || box.read('skipIntro') == true) {
+      isSkipIntro.value = true;
+    }
+  }
+
+  Future<bool> autoLogin() async {
+    try {
+      final isSignIn = await _googleSignIn.isSignedIn();
+      if (isSignIn) {
+        return true;
+      }
+      return false;
+    } catch (err) {
+      print(err);
+      return false;
+    }
+  }
 
   Future<void> login() async {
     try {
@@ -34,6 +53,11 @@ class AuthController extends GetxController {
             .then((value) => userCredential = value);
         print("User credential");
         print(userCredential);
+
+        //save user status login => not showing introduction again
+        final box = GetStorage();
+        box.write('skipIntro', true);
+
         isAuth.value = true;
         Get.offAllNamed(Routes.HOME);
       } else {
