@@ -1,6 +1,6 @@
 # chatapp
 
-A new Flutter project.
+This is chat app based with flutter and GetX state management, this chat app connected with Firebase firestore
 
 ## Getting Started
 
