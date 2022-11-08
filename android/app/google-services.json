@@ -52,12 +52,20 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:398204898330:android:bb58a8a80af01c922315a3",
+        "mobilesdk_app_id": "1:398204898330:android:d2770842617f37bc2315a3",
         "android_client_info": {
-          "package_name": "com.fiergetech.chatapp"
+          "package_name": "com.example.chatapp"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "398204898330-h2lg61jfhjfh6gsle1becvfg640g6oto.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chatapp",
+            "certificate_hash": "da2c0094b5d98c51138787d676a3bb44cef16a4a"
+          }
+        },
         {
           "client_id": "398204898330-mjqqjnj5d17jb8nvo28q103jtu9pi4e9.apps.googleusercontent.com",
           "client_type": 3
