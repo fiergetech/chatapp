@@ -13,10 +13,25 @@ class AuthController extends GetxController {
   GoogleSignIn _googleSignIn = GoogleSignIn();
 
   Future<void> firstInitialized() async {
+    await autoLogin().then((value) {
+      if (value) {
+        isAuth.value = true;
+      }
+    });
+    await skipIntro().then((value) {
+      if (value) {
+        isSkipIntro.value = true;
+      }
+    });
+  }
+
+  Future<bool> skipIntro() async {
     final box = GetStorage();
     if (box.read('skipIntro') != null || box.read('skipIntro') == true) {
-      isSkipIntro.value = true;
+      return true;
     }
+
+    return false;
   }
 
   Future<bool> autoLogin() async {
@@ -33,6 +48,7 @@ class AuthController extends GetxController {
   }
 
   Future<void> login() async {
+    // change isAuth to true autologin
     try {
       await _googleSignIn.signOut();
       await _googleSignIn.signIn().then((value) => _currentUser = value);
@@ -56,6 +72,9 @@ class AuthController extends GetxController {
 
         //save user status login => not showing introduction again
         final box = GetStorage();
+        if (box.read('skipIntro') != null) {
+          box.remove('skipIntro');
+        }
         box.write('skipIntro', true);
 
         isAuth.value = true;
@@ -69,6 +88,8 @@ class AuthController extends GetxController {
   }
 
   Future<void> logout() async {
+    await _googleSignIn.disconnect();
+
     await _googleSignIn.signOut();
     Get.offAllNamed(Routes.LOGIN);
   }
