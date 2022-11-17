@@ -3,12 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthController extends GetxController {
   var isSkipIntro = false.obs;
   var isAuth = false.obs;
   UserCredential? userCredential;
-
+  //TODO FirebaseFirestore;
   GoogleSignInAccount? _currentUser;
   GoogleSignIn _googleSignIn = GoogleSignIn();
 
