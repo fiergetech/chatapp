@@ -10,6 +10,7 @@ class AuthController extends GetxController {
   var isAuth = false.obs;
   UserCredential? userCredential;
   //TODO FirebaseFirestore;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
   GoogleSignInAccount? _currentUser;
   GoogleSignIn _googleSignIn = GoogleSignIn();
 
@@ -78,6 +79,19 @@ class AuthController extends GetxController {
         }
         box.write('skipIntro', true);
 
+        CollectionReference users = firestore.collection('users');
+        users.doc(_currentUser!.email).set({
+          "uid": userCredential!.user!.uid,
+          "name": _currentUser!.displayName,
+          "email": _currentUser!.email,
+          "photoUrl": _currentUser!.photoUrl,
+          "status": "",
+          "createdAt":
+              userCredential!.user!.metadata.creationTime!.toIso8601String(),
+          "lastSignInTime":
+              userCredential!.user!.metadata.lastSignInTime!.toIso8601String(),
+          "updatedAt": DateTime.now().toIso8601String(),
+        });
         isAuth.value = true;
         Get.offAllNamed(Routes.HOME);
       } else {
