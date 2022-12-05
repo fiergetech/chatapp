@@ -38,21 +38,22 @@ class ProfileView extends GetView<ProfileController> {
             child: Column(
               children: [
                 AvatarGlow(
-                  endRadius: 75,
+                  endRadius: 110,
                   glowColor: Colors.black,
                   duration: Duration(seconds: 2),
                   child: Container(
                     margin: EdgeInsets.all(15),
-                    width: 120,
-                    height: 120,
+                    width: 175,
+                    height: 175,
                     child: ClipRRect(
-                      child: autchC.user.photoUrl! == "noimage"
+                      borderRadius: BorderRadius.circular(200),
+                      child: autchC.user.value.photoUrl! == "noimage"
                           ? Image.asset(
                               "assets/logo/noimage.png",
                               fit: BoxFit.cover,
                             )
                           : Image.network(
-                              autchC.user.photoUrl!,
+                              autchC.user.value.photoUrl!,
                               fit: BoxFit.cover,
                             ),
                     ),
@@ -61,16 +62,18 @@ class ProfileView extends GetView<ProfileController> {
                 SizedBox(
                   height: 15,
                 ),
-                Text(
-                  "${autchC.user.name!}",
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
+                Obx(
+                  () => Text(
+                    "${autchC.user.value.name!}",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
                 Text(
-                  "${autchC.user.email!}",
+                  "${autchC.user.value.email!}",
                   style: TextStyle(
                     fontSize: 20,
                   ),

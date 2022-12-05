@@ -10,7 +10,7 @@ class AuthController extends GetxController {
   var isSkipIntro = false.obs;
   var isAuth = false.obs;
   UserCredential? userCredential;
-  UserModel user = UserModel();
+  var user = UserModel().obs;
   //TODO FirebaseFirestore;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   GoogleSignInAccount? _currentUser;
@@ -64,7 +64,8 @@ class AuthController extends GetxController {
         });
         final currUser = await users.doc(_currentUser!.email).get();
         final currUserData = currUser.data() as Map<String, dynamic>;
-        user = UserModel(
+
+        user(UserModel(
           uid: currUserData["uid"],
           name: currUserData["name"],
           email: currUserData["email"],
@@ -73,7 +74,7 @@ class AuthController extends GetxController {
           createdAt: currUserData["createdAt"],
           lastSignInTime: currUserData["lastSignInTime"],
           updatedAt: currUserData["updatedAt"],
-        );
+        ));
         return true;
       }
       return false;
@@ -134,7 +135,7 @@ class AuthController extends GetxController {
         }
         final currUser = await users.doc(_currentUser!.email).get();
         final currUserData = currUser.data() as Map<String, dynamic>;
-        user = UserModel(
+        user(UserModel(
           uid: currUserData["uid"],
           name: currUserData["name"],
           email: currUserData["email"],
@@ -143,7 +144,7 @@ class AuthController extends GetxController {
           createdAt: currUserData["createdAt"],
           lastSignInTime: currUserData["lastSignInTime"],
           updatedAt: currUserData["updatedAt"],
-        );
+        ));
 
         isAuth.value = true;
         Get.offAllNamed(Routes.HOME);
@@ -160,5 +161,55 @@ class AuthController extends GetxController {
 
     await _googleSignIn.signOut();
     Get.offAllNamed(Routes.LOGIN);
+  }
+
+  // profile
+  void changeProfile(String name, String status) {
+    String date = DateTime.now().toIso8601String();
+    // update firebase
+    CollectionReference users = firestore.collection('users');
+    users.doc(_currentUser!.email).update({
+      "name": name,
+      "status": status,
+      "lastSignInTime":
+          userCredential!.user!.metadata.lastSignInTime!.toIso8601String(),
+      "updatedAt": date,
+    });
+
+    // update model
+    user.update((user) {
+      user!.name = name;
+      user.status = status;
+      user.lastSignInTime =
+          userCredential!.user!.metadata.lastSignInTime!.toIso8601String();
+      user.updatedAt = date;
+    });
+
+    user.refresh();
+    Get.defaultDialog(title: "Succes", middleText: "Profile update success");
+  }
+
+  void updateStatus(String status) {
+    String date = DateTime.now().toIso8601String();
+
+    // update firebase
+    CollectionReference users = firestore.collection('users');
+    users.doc(_currentUser!.email).update({
+      "status": status,
+      "lastSignInTime":
+          userCredential!.user!.metadata.lastSignInTime!.toIso8601String(),
+      "updatedAt": date,
+    });
+
+    // update model
+    user.update((user) {
+      user!.status = status;
+      user.lastSignInTime =
+          userCredential!.user!.metadata.lastSignInTime!.toIso8601String();
+      user.updatedAt = date;
+    });
+
+    user.refresh();
+    Get.defaultDialog(title: "Succes", middleText: "Status update success");
   }
 }

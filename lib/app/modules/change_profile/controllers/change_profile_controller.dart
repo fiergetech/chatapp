@@ -5,10 +5,11 @@ class ChangeProfileController extends GetxController {
   late TextEditingController emailC;
   late TextEditingController nameC;
   late TextEditingController statusC;
+
   @override
   void onInit() {
-    emailC = TextEditingController(text: "johndoe@gmail.com");
-    nameC = TextEditingController(text: "John Doe");
+    emailC = TextEditingController();
+    nameC = TextEditingController();
     statusC = TextEditingController();
 
     super.onInit();
