@@ -45,13 +45,16 @@ class ProfileView extends GetView<ProfileController> {
                     margin: EdgeInsets.all(15),
                     width: 120,
                     height: 120,
-                    decoration: BoxDecoration(
-                      color: Colors.black38,
-                      borderRadius: BorderRadius.circular(100),
-                      image: DecorationImage(
-                        image: AssetImage("assets/logo/noimage.png"),
-                        fit: BoxFit.cover,
-                      ),
+                    child: ClipRRect(
+                      child: autchC.user.photoUrl! == "noimage"
+                          ? Image.asset(
+                              "assets/logo/noimage.png",
+                              fit: BoxFit.cover,
+                            )
+                          : Image.network(
+                              autchC.user.photoUrl!,
+                              fit: BoxFit.cover,
+                            ),
                     ),
                   ),
                 ),
@@ -59,7 +62,7 @@ class ProfileView extends GetView<ProfileController> {
                   height: 15,
                 ),
                 Text(
-                  "John Doe",
+                  "${autchC.user.name!}",
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
@@ -67,7 +70,7 @@ class ProfileView extends GetView<ProfileController> {
                   textAlign: TextAlign.center,
                 ),
                 Text(
-                  "johndoe@gmail.com",
+                  "${autchC.user.email!}",
                   style: TextStyle(
                     fontSize: 20,
                   ),

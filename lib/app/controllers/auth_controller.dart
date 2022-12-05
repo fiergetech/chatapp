@@ -1,3 +1,4 @@
+import 'package:chatapp/app/data/models/user_model.dart';
 import 'package:chatapp/app/routes/app_pages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -9,6 +10,7 @@ class AuthController extends GetxController {
   var isSkipIntro = false.obs;
   var isAuth = false.obs;
   UserCredential? userCredential;
+  UserModel user = UserModel();
   //TODO FirebaseFirestore;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   GoogleSignInAccount? _currentUser;
@@ -40,6 +42,38 @@ class AuthController extends GetxController {
     try {
       final isSignIn = await _googleSignIn.isSignedIn();
       if (isSignIn) {
+        await _googleSignIn
+            .signInSilently()
+            .then((value) => _currentUser = value);
+        final googleAuth = await _currentUser!.authentication;
+        final credential = GoogleAuthProvider.credential(
+          idToken: googleAuth.idToken,
+          accessToken: googleAuth.accessToken,
+        );
+
+        await FirebaseAuth.instance
+            .signInWithCredential(credential)
+            .then((value) => userCredential = value);
+        print("User credential");
+        print(userCredential);
+        CollectionReference users = firestore.collection('users');
+
+        users.doc(_currentUser!.email).update({
+          "lastSignInTime":
+              userCredential!.user!.metadata.lastSignInTime!.toIso8601String(),
+        });
+        final currUser = await users.doc(_currentUser!.email).get();
+        final currUserData = currUser.data() as Map<String, dynamic>;
+        user = UserModel(
+          uid: currUserData["uid"],
+          name: currUserData["name"],
+          email: currUserData["email"],
+          photoUrl: currUserData["photoUrl"],
+          status: currUserData["status"],
+          createdAt: currUserData["createdAt"],
+          lastSignInTime: currUserData["lastSignInTime"],
+          updatedAt: currUserData["updatedAt"],
+        );
         return true;
       }
       return false;
@@ -80,18 +114,37 @@ class AuthController extends GetxController {
         box.write('skipIntro', true);
 
         CollectionReference users = firestore.collection('users');
-        users.doc(_currentUser!.email).set({
-          "uid": userCredential!.user!.uid,
-          "name": _currentUser!.displayName,
-          "email": _currentUser!.email,
-          "photoUrl": _currentUser!.photoUrl,
-          "status": "",
-          "createdAt":
-              userCredential!.user!.metadata.creationTime!.toIso8601String(),
-          "lastSignInTime":
-              userCredential!.user!.metadata.lastSignInTime!.toIso8601String(),
-          "updatedAt": DateTime.now().toIso8601String(),
-        });
+
+        final checkuser = await users.doc(_currentUser!.email).get();
+        if (checkuser.data() == null) {
+          users.doc(_currentUser!.email).set({
+            "uid": userCredential!.user!.uid,
+            "name": _currentUser!.displayName,
+            "email": _currentUser!.email,
+            "photoUrl": _currentUser!.photoUrl ?? "noimage",
+            "status": "",
+            "createdAt":
+                userCredential!.user!.metadata.creationTime!.toIso8601String(),
+          });
+        } else {
+          users.doc(_currentUser!.email).update({
+            "lastSignInTime": userCredential!.user!.metadata.lastSignInTime!
+                .toIso8601String(),
+          });
+        }
+        final currUser = await users.doc(_currentUser!.email).get();
+        final currUserData = currUser.data() as Map<String, dynamic>;
+        user = UserModel(
+          uid: currUserData["uid"],
+          name: currUserData["name"],
+          email: currUserData["email"],
+          photoUrl: currUserData["photoUrl"],
+          status: currUserData["status"],
+          createdAt: currUserData["createdAt"],
+          lastSignInTime: currUserData["lastSignInTime"],
+          updatedAt: currUserData["updatedAt"],
+        );
+
         isAuth.value = true;
         Get.offAllNamed(Routes.HOME);
       } else {
