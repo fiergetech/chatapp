@@ -8,7 +8,7 @@ class SearchController extends GetxController {
   var queryFirst = [].obs;
   var tempSearch = [].obs;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  void searchUser(String data) async {
+  void searchUser(String data, String email) async {
     print("SEARCH  : $data");
     if (data.length == 0) {
       queryFirst.value = [];
@@ -21,7 +21,9 @@ class SearchController extends GetxController {
         CollectionReference users = await firestore.collection("users");
         final keyNameResult = await users
             .where("keyName", isEqualTo: data.substring(0, 1).toUpperCase())
+            .where("email", isNotEqualTo: email)
             .get();
+
         print("TOTAL DATA: ${keyNameResult.docs.length}");
         if (keyNameResult.docs.length > 0) {
           for (int i = 0; i < keyNameResult.docs.length; i++) {
