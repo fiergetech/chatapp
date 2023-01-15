@@ -18,8 +18,8 @@ class SearchController extends GetxController {
       print(capitalized);
       if (queryFirst.length == 0 && data.length == 1) {
         //first function to start while first type
-        CollectionReference clients = await firestore.collection("clients");
-        final keyNameResult = await clients
+        CollectionReference users = await firestore.collection("users");
+        final keyNameResult = await users
             .where("keyName", isEqualTo: data.substring(0, 1).toUpperCase())
             .get();
         print("TOTAL DATA: ${keyNameResult.docs.length}");

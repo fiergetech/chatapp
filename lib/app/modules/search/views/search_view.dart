@@ -79,6 +79,10 @@ class SearchView extends GetView<SearchController> {
                 padding: EdgeInsets.zero,
                 itemCount: controller.tempSearch.length,
                 itemBuilder: (context, index) => ListTile(
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 2,
+                    horizontal: 10,
+                  ),
                   onTap: () => Get.toNamed(Routes.CHAT_ROOM),
                   leading: CircleAvatar(
                     radius: 30,
