@@ -203,4 +203,73 @@ class AuthController extends GetxController {
     user.refresh();
     Get.defaultDialog(title: "Succes", middleText: "Status update success");
   }
+
+  void addNewConnection(String friendEmail) async {
+    bool flagNewConnection = false;
+    var chat_id;
+
+    String date = DateTime.now().toIso8601String();
+    CollectionReference chats = firestore.collection("chats");
+    CollectionReference users = firestore.collection("users");
+
+    final docUser = await users.doc(_currentUser!.email).get();
+    final docChats = (docUser.data() as Map<String, dynamic>)["chats"] as List;
+
+    if (docChats.length != 0) {
+      // user ever chat with anyone
+
+      docChats.forEach((singleChat) {
+        if (singleChat["connection"] == friendEmail) {
+          chat_id = singleChat["chat_id"];
+        }
+      });
+      if (chat_id != null) {
+        // ever create connection (history chat) with > friendEmail
+        flagNewConnection = false;
+      } else {
+        flagNewConnection = true;
+      }
+    } else {
+      // havent chat with anyone
+      flagNewConnection = true;
+    }
+
+    if (flagNewConnection) {
+      final newChatDoc = await chats.add({
+        "connections": [
+          _currentUser!.email,
+          friendEmail,
+        ],
+        "total_chats": 0,
+        "total_read": 0,
+        "total_unread": 0,
+        "chat": [],
+        "lastTime": date,
+      });
+      await users.doc(_currentUser!.email).update({
+        "chats": [
+          {
+            "connection": friendEmail,
+            "chat_id": newChatDoc.id,
+            "lastTime": DateTime.now().toIso8601String(),
+          }
+        ]
+      });
+      user.update((user) {
+        user!.chats = [
+          ChatUser(
+            chatId: newChatDoc.id,
+            connection: friendEmail,
+            lastTime: date,
+          )
+        ];
+      });
+      user.refresh();
+      chat_id = newChatDoc.id;
+    }
+    print(chat_id);
+    // havent create connection (history chat) with > friendEmail
+    // ever create connection (history chat) with > friendEmail
+    Get.toNamed(Routes.CHAT_ROOM, arguments: chat_id);
+  }
 }
