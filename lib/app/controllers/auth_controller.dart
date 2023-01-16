@@ -235,37 +235,78 @@ class AuthController extends GetxController {
     }
 
     if (flagNewConnection) {
-      final newChatDoc = await chats.add({
-        "connections": [
-          _currentUser!.email,
-          friendEmail,
+      final chatDocs = await chats.where(
+        "connections",
+        whereIn: [
+          [
+            friendEmail, //zurfech
+
+            _currentUser!.email, //hindro
+          ],
+          [
+            _currentUser!.email, //hindro
+            friendEmail, //zurfech
+          ],
         ],
-        "total_chats": 0,
-        "total_read": 0,
-        "total_unread": 0,
-        "chat": [],
-        "lastTime": date,
-      });
-      await users.doc(_currentUser!.email).update({
-        "chats": [
-          {
-            "connection": friendEmail,
-            "chat_id": newChatDoc.id,
-            "lastTime": DateTime.now().toIso8601String(),
-          }
-        ]
-      });
-      user.update((user) {
-        user!.chats = [
-          ChatUser(
-            chatId: newChatDoc.id,
-            connection: friendEmail,
-            lastTime: date,
-          )
-        ];
-      });
-      user.refresh();
-      chat_id = newChatDoc.id;
+      ).get();
+      if (chatDocs.docs.length != 0) {
+        //already connection between both
+        final chatsDataId = chatDocs.docs[0].id;
+        final chatsData = chatDocs.docs[0].data() as Map<String, dynamic>;
+        await users.doc(_currentUser!.email).update({
+          "chats": [
+            {
+              "connection": friendEmail,
+              "chat_id": chatsDataId,
+              "lastTime": chatsData["lastTime"],
+            }
+          ]
+        });
+        user.update((user) {
+          user!.chats = [
+            ChatUser(
+              chatId: chatsDataId,
+              connection: friendEmail,
+              lastTime: chatsData["lastTime"],
+            )
+          ];
+        });
+        user.refresh();
+        chat_id = chatsDataId;
+      } else {
+        //create new never have connection
+        final newChatDoc = await chats.add({
+          "connections": [
+            _currentUser!.email,
+            friendEmail,
+          ],
+          "total_chats": 0,
+          "total_read": 0,
+          "total_unread": 0,
+          "chat": [],
+          "lastTime": date,
+        });
+        await users.doc(_currentUser!.email).update({
+          "chats": [
+            {
+              "connection": friendEmail,
+              "chat_id": newChatDoc.id,
+              "lastTime": DateTime.now().toIso8601String(),
+            }
+          ]
+        });
+        user.update((user) {
+          user!.chats = [
+            ChatUser(
+              chatId: newChatDoc.id,
+              connection: friendEmail,
+              lastTime: date,
+            )
+          ];
+        });
+        user.refresh();
+        chat_id = newChatDoc.id;
+      }
     }
     print(chat_id);
     // havent create connection (history chat) with > friendEmail
