@@ -92,9 +92,17 @@ class SearchView extends GetView<SearchController> {
                   leading: CircleAvatar(
                     radius: 30,
                     backgroundColor: Colors.black26,
-                    child: Image.asset(
-                      "assets/logo/noimage.png",
-                      fit: BoxFit.cover,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child:
+                          controller.tempSearch[index]["photoUrl"] == "nomiage"
+                              ? Image.asset(
+                                  "assets/logo/noimage.png",
+                                )
+                              : Image.network(
+                                  controller.tempSearch[index]["photoUrl"],
+                                  fit: BoxFit.cover,
+                                ),
                     ),
                   ),
                   title: Text(

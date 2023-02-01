@@ -207,7 +207,8 @@ class AuthController extends GetxController {
   void addNewConnection(String friendEmail) async {
     bool flagNewConnection = false;
     var chat_id;
-
+    var connection;
+    var lastTime;
     String date = DateTime.now().toIso8601String();
     CollectionReference chats = firestore.collection("chats");
     CollectionReference users = firestore.collection("users");
@@ -217,6 +218,12 @@ class AuthController extends GetxController {
 
     if (docChats.length != 0) {
       // user ever chat with anyone
+
+      /*docChats.add({
+        "connection": friendEmail,
+        "chat_id": chatsDataId,
+        "lastTime": chatsData["lastTime"],
+      });*/
 
       docChats.forEach((singleChat) {
         if (singleChat["connection"] == friendEmail) {
@@ -240,7 +247,6 @@ class AuthController extends GetxController {
         whereIn: [
           [
             friendEmail, //zurfech
-
             _currentUser!.email, //hindro
           ],
           [
@@ -253,23 +259,18 @@ class AuthController extends GetxController {
         //already connection between both
         final chatsDataId = chatDocs.docs[0].id;
         final chatsData = chatDocs.docs[0].data() as Map<String, dynamic>;
-        await users.doc(_currentUser!.email).update({
-          "chats": [
-            {
-              "connection": friendEmail,
-              "chat_id": chatsDataId,
-              "lastTime": chatsData["lastTime"],
-            }
-          ]
+
+        // TODO don't replace old data
+        docChats.add({
+          "connection": friendEmail,
+          "chat_id": chatsDataId,
+          "lastTime": chatsData["lastTime"],
         });
+
+        await users.doc(_currentUser!.email).update({"chats": docChats});
+
         user.update((user) {
-          user!.chats = [
-            ChatUser(
-              chatId: chatsDataId,
-              connection: friendEmail,
-              lastTime: chatsData["lastTime"],
-            )
-          ];
+          user!.chats = docChats as List<ChatUser>;
         });
         user.refresh();
         chat_id = chatsDataId;
@@ -286,23 +287,17 @@ class AuthController extends GetxController {
           "chat": [],
           "lastTime": date,
         });
-        await users.doc(_currentUser!.email).update({
-          "chats": [
-            {
-              "connection": friendEmail,
-              "chat_id": newChatDoc.id,
-              "lastTime": DateTime.now().toIso8601String(),
-            }
-          ]
+
+        docChats.add({
+          "connection": friendEmail,
+          "chat_id": newChatDoc.id,
+          "lastTime": date,
         });
+
+        await users.doc(_currentUser!.email).update({"chats": docChats});
+
         user.update((user) {
-          user!.chats = [
-            ChatUser(
-              chatId: newChatDoc.id,
-              connection: friendEmail,
-              lastTime: date,
-            )
-          ];
+          user!.chats = docChats as List<ChatUser>;
         });
         user.refresh();
         chat_id = newChatDoc.id;
