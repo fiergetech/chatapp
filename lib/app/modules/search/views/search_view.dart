@@ -88,7 +88,10 @@ class SearchView extends GetView<SearchController> {
                     vertical: 2,
                     horizontal: 10,
                   ),
-                  onTap: () => Get.toNamed(Routes.CHAT_ROOM),
+                  //  onTap: () => Get.toNamed(Routes.CHAT_ROOM),
+                  onTap: () => authC.addNewConnection(
+                    controller.tempSearch[index]["email"],
+                  ),
                   leading: CircleAvatar(
                     radius: 30,
                     backgroundColor: Colors.black26,
